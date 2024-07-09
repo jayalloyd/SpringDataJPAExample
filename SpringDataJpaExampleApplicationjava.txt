@@ -1,0 +1,46 @@
+package com.meenus.SpringDataJPAExample;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import com.meenus.SpringDataJPAExample.model.Student;
+
+@SpringBootApplication
+public class SpringDataJpaExampleApplication {
+
+	public static void main(String[] args) {
+
+				ApplicationContext context=	SpringApplication.run(SpringDataJpaExampleApplication.class, args);
+			StudentRepo repo=context.getBean(StudentRepo.class);
+				Student st=context.getBean(Student.class);
+		st.setRollNo(1);
+		st.setName("mimtuu");
+		st.setMarks(50);
+
+		Student st1=context.getBean(Student.class);
+		st1.setRollNo(2);
+		st1.setName("meenu");
+		st1.setMarks(50);
+
+		Student st2=context.getBean(Student.class);
+		st2.setRollNo(3);
+		st2.setName("mintu");
+		st2.setMarks(50);
+
+
+		Student st3=context.getBean(Student.class);
+		st3.setRollNo(4);
+		st3.setName("meena");
+		st3.setMarks(50);
+
+		repo.save(st);
+		repo.save(st1);
+		repo.save(st2);
+		repo.save(st3);
+
+
+
+
+	}
+
+}
