@@ -1,0 +1,101 @@
+package com.meenus.SpringDataJPAExample.aop;
+
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+@Component
+@Aspect
+public class LoggingFile {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoggingFile.class);
+//
+//    @Before("execution(* com.meenus.SpringDataJPAExample.StudentRepo.findByMarksGreaterThan(int)) && args(marks)")
+//    public void logMethodCall(int marks) {
+//        LOGGER.info("Method called with marks greater than: " + marks);
+//    }
+    @After("execution(* com.meenus.SpringDataJPAExample.StudentRepo.*(..))")
+    public void logMethodExecuted(JoinPoint jp) {
+        LOGGER.info("Method executed : " +jp.getSignature().getName()                );
+    }
+
+}
+Application.properties
+spring.application.name=SpringDataJPAExample
+spring.datasource.url=jdbc:mysql://localhost:3306/dreamz_bank
+spring.datasource.username=root
+spring.datasource.password=password
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+logging.level.root=INFO
+logging.level.com.meenus.SpringDataJPAExample=INFO
+
+SpringDataJpaExampleApplicationjava
+package com.meenus.SpringDataJPAExample;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+import com.meenus.SpringDataJPAExample.model.Student;
+import org.springframework.context.annotation.ComponentScan;
+
+import java.util.List;
+import java.util.Optional;
+
+@SpringBootApplication
+		@ComponentScan(basePackages = {"com.meenus.SpringDataJPAExample"})
+public class SpringDataJpaExampleApplication {
+
+	public static void main(String[] args) {
+
+				ApplicationContext context=	SpringApplication.run(SpringDataJpaExampleApplication.class, args);
+			StudentRepo repo=context.getBean(StudentRepo.class);
+//				Student st=context.getBean(Student.class);
+//		st.setRollNo(1);
+//		st.setName("mimtuu");
+//		st.setMarks(50);
+//
+//		Student st1=context.getBean(Student.class);
+//		st1.setRollNo(2);
+//		st1.setName("meenu");
+//		st1.setMarks(50);
+
+		Student st2=context.getBean(Student.class);
+		st2.setRollNo(3);
+		st2.setName("Tintu");//changed name
+		st2.setMarks(50);
+//
+//
+		Student st3=context.getBean(Student.class);
+		st3.setRollNo(4);
+		st3.setName("meena");
+		st3.setMarks(50);
+//
+//		repo.save(st);
+//		repo.save(st1);
+//		repo.save(st2);
+//		repo.save(st3);
+//
+//
+      // System.out.println(repo.findAll());
+//		Optional<Student> s= repo.findById(2);//finds by using primary key
+//		System.out.println(s.orElse(new Student()));//returns null if data not there in db
+
+			//System.out.println(repo.findByMarks(50));//find by Marks..DSLdomain specific language provides this feature
+		//of having find by properties in the class
+
+		System.out.println(repo.findByMarksGreaterThan(45));//retrieves data greater than 45
+
+	           repo.save(st2);//to update
+			repo.delete(st3);// to delete
+
+	}
+
+}
+
